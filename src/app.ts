@@ -1,8 +1,10 @@
-import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import fastifyJwt from "@fastify/jwt";
+import Fastify, { FastifyReply, FastifyRequest } from "fastify";
+import productRoutes from "./modules/product/product.route";
+
+import { productSchemas } from "./modules/product/product.schema";
 import userRoutes from "./modules/user/user.route";
 import { userSchemas } from "./modules/user/user.schema";
-import { productSchemas } from "./modules/product/product.schema";
 
 export const server = Fastify();
 
@@ -28,11 +30,12 @@ server.get("/health-check", async () => {
 });
 
 async function main() {
-  for (const schema of [...userSchemas, ...productSchemas]) {
+  for (const schema of [...productSchemas, ...userSchemas]) {
     server.addSchema(schema);
   }
   // Routes
   server.register(userRoutes, { prefix: "api/users" });
+  server.register(productRoutes, { prefix: "api/products" });
 
   try {
     const address = await server.listen(3000, "0.0.0.0");
