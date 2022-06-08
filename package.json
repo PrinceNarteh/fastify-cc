@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/PrinceNarteh/fastify-cc#readme",
   "dependencies": {
+    "@fastify/jwt": "5.0.0",
     "@prisma/client": "^3.14.0",
     "fastify": "^3.29.0",
-    "fastify-jwt": "^4.2.0",
     "fastify-zod": "^1.0.0",
     "zod": "^3.17.3",
     "zod-to-json-schema": "^3.17.0"
