@@ -21,3 +21,13 @@ export async function createUser(input: CreateUserInput): Promise<User> {
 export async function findUserByEmail(email: string) {
   return await prisma.user.findUnique({ where: { email } });
 }
+
+export async function getUsers() {
+  return await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+}

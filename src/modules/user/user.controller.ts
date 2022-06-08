@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { server } from "../../app";
 import { verifyPassword } from "../../utils/hash";
 import { CreateUserInput, LoginInput } from "./user.schema";
-import { createUser, findUserByEmail } from "./user.service";
+import { createUser, findUserByEmail, getUsers } from "./user.service";
 
 export async function registerUserHandler(
   request: FastifyRequest<{
@@ -45,4 +45,12 @@ export async function loginUserHandler(
   }
 
   return reply.code(401).send({ message: "Invalid credentials" });
+}
+
+export async function getUsersHandler(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  const users = await getUsers();
+  return reply.code(200).send(users);
 }

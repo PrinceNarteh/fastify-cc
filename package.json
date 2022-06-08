@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/PrinceNarteh/fastify-cc#readme",
   "dependencies": {
+    "@fastify/env": "^3.0.0",
     "@fastify/jwt": "5.0.0",
     "@prisma/client": "^3.14.0",
     "fastify": "^3.29.0",
