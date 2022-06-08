@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CreateUserInput } from "./user.schema";
-import { createUser } from "./user.service";
+import { server } from "../../app";
+import { verifyPassword } from "../../utils/hash";
+import { CreateUserInput, LoginInput } from "./user.schema";
+import { createUser, findUserByEmail } from "./user.service";
 
 export async function registerUserHandler(
   request: FastifyRequest<{
@@ -15,4 +17,32 @@ export async function registerUserHandler(
   } catch (error) {
     reply.code(500).send(error);
   }
+}
+
+export async function loginUserHandler(
+  request: FastifyRequest<{
+    Body: LoginInput;
+  }>,
+  reply: FastifyReply
+) {
+  const { email, password } = request.body;
+  const user = await findUserByEmail(email);
+  if (!user) {
+    return reply.code(401).send({ message: "Invalid credentials" });
+  }
+
+  const isMatch = verifyPassword({
+    candidatePassword: password,
+    hash: user.password,
+    salt: user.salt,
+  });
+
+  if (isMatch) {
+    const { password, salt, ...rest } = user;
+    return {
+      accessToken: server.jwt.sign(rest),
+    };
+  }
+
+  return reply.code(401).send({ message: "Invalid credentials" });
 }
