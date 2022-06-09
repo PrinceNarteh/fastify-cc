@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { number, string, z } from "zod";
 import { buildJsonSchemas } from "fastify-zod";
 
 const productInput = {
@@ -20,6 +20,13 @@ const createProductSchema = z.object({
 const productResponseSchema = z.object({
   ...productInput,
   ...productGenerated,
+  owner: z
+    .object({
+      id: number(),
+      name: z.string(),
+      email: z.string().optional(),
+    })
+    .optional(),
 });
 
 const productsResponseSchema = z.array(productResponseSchema);
@@ -32,6 +39,6 @@ export const { schemas: productSchemas, $ref } = buildJsonSchemas(
     productsResponseSchema,
   },
   {
-    $id: "product",
+    $id: "products",
   }
 );

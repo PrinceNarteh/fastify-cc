@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { prisma } from "../../libs/prisma";
 import { CreateProductInput } from "./product.schema";
+import { getProducts } from "./product.service";
 
 export async function createProductHandler(
   request: FastifyRequest<{
@@ -16,5 +17,5 @@ export async function createProductHandler(
 }
 
 export async function getProductsHandler() {
-  return await prisma.product.findMany();
+  return await getProducts();
 }

@@ -6,18 +6,29 @@ async function productRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
+      preHandler: [server.authenticate],
       schema: {
         body: $ref("createProductSchema"),
         response: {
           201: $ref("productResponseSchema"),
         },
       },
-      preHandler: [server.authenticate],
     },
     createProductHandler
   );
 
-  server.get("/", getProductsHandler);
+  server.get(
+    "/",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        response: {
+          200: $ref("productsResponseSchema"),
+        },
+      },
+    },
+    getProductsHandler
+  );
 }
 
 export default productRoutes;
