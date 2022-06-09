@@ -48,6 +48,6 @@ export const { schemas: userSchemas, $ref } = buildJsonSchemas(
     loginResponseSchema,
   },
   {
-    $id: "user",
+    $id: "users",
   }
 );
